@@ -1,10 +1,12 @@
 <script>
+    import { getContext } from "svelte";
     import Card from "../ui/card.svelte";
-import WeatherIcon from "./weather-icon.svelte";
+    import WeatherIcon from "./weather-icon.svelte";
 
     export let forecast
     export let weather
 
+    const stickyHeader = getContext('isStickyHeader')
     const [todayWeather, tomorrowWeather] = forecast
 
     const next48Hours = [...todayWeather.hours, ...tomorrowWeather.hours]
@@ -17,7 +19,7 @@ import WeatherIcon from "./weather-icon.svelte";
     const next24Hours = next48Hours.slice(currentTimeIndex, currentTimeIndex + 24)
 </script>
 
-<Card title="Next 24 hours">
+<Card title="Next 24 hours" class="card {weather.isDay ? 'day' : 'night'} {$stickyHeader ? 'bg' : ''}">
     <div class="weather-container">
         {#each next24Hours as hour}
             <div class="weather-hour" class:day={hour.isDay}>
@@ -30,6 +32,17 @@ import WeatherIcon from "./weather-icon.svelte";
 </Card>
 
 <style scoped>
+:global(.card) {
+    transition: all ease .5s;
+}
+:global(.card.day.bg) {
+    background: #ffffff;
+}
+
+:global(.card.night.bg) {
+    background: #303030;
+}
+
 .weather-container {
     display: flex;
     overflow-x: auto;

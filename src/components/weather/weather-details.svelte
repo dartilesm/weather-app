@@ -19,7 +19,7 @@
 
 </script>
 
-<Card title="Details" class="card {weather.isDay ? 'day' : 'night'} {$stickyHeader ? 'bg' : ''}" >
+<Card title="Details" class="card {weather.isDay ? 'day' : 'night'} {$stickyHeader ? 'bg' : ''}">
     <div class="weather-container">
         <div class="weather-astro-icon">
             <img src={UVIcon} alt="uv" />
@@ -34,7 +34,7 @@
         <div class="weather-astro-icon">
             <img src={WindIcon} alt="wind" />
 			<span class="text"> Windspeed </span>
-			<span> {weather.windKph} km/h </span>
+			<span> {Math.floor(weather.windKph)} km/h </span>
         </div>
         <div class="weather-astro-icon">
             <img src={BarometerIcon} alt="barometer" />
@@ -65,12 +65,16 @@
 </Card>
 
 <style scoped>
+:global(.card) {
+    transition: all ease .5s;
+}
+
 :global(.card.day.bg) {
-    background: #f7f7f7;
+    background: #ffffff;
 }
 
 :global(.card.night.bg) {
-    background: #f7f7f7;
+    background: #303030;
 }
 .weather-container {
     display: flex;

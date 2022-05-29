@@ -8,6 +8,8 @@
 
     const sticky = getContext('isStickyHeader')
     const [todayWeather, tomorrowWeather, dayAfterTomorrowWeather] = forecast;
+
+    const localTime = new Date(`${weather.lastUpdated}`).toLocaleTimeString('en-US', { hour: 'numeric' })
 </script>
 
 <div class="weather-header" class:sticky={$sticky}>
@@ -16,9 +18,14 @@
     <div class="temperature">
         <div class="temperature-degree-container">
             <h2 class="temperature-degree">{Math.floor(weather.tempC)}°</h2>
-            <h4 class="feels-like">
-                {Math.floor(todayWeather.day.maxtempC)} C° / {Math.floor(todayWeather.day.mintempC)} C°
-            </h4>
+            <div>
+                <h4 class="feels-like">
+                    {Math.floor(todayWeather.day.maxtempC)} C° / {Math.floor(todayWeather.day.mintempC)} C°
+                </h4>
+                <h4>
+                    {localTime}
+                </h4>
+            </div>
         </div>
         <span class="weather-icon">
             <WeatherIcon name={weather.condition.text} isDay={weather.isDay} width={$sticky ? 75 : 150} />
