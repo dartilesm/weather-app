@@ -9,7 +9,7 @@
     const sticky = getContext('isStickyHeader')
     const [todayWeather, tomorrowWeather, dayAfterTomorrowWeather] = forecast;
 
-    const localTime = new Date(`${weather.lastUpdated}`).toLocaleTimeString('en-US', { hour: 'numeric' })
+    const localTime = new Date(`${location.localtime}`).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' })
 </script>
 
 <div class="weather-header" class:sticky={$sticky}>

@@ -16,7 +16,7 @@
 
     const currentTime = new Date(`${weather.lastUpdated}`).toLocaleTimeString('en-US', { hour: 'numeric' })
     const currentTimeIndex = next48Hours.findIndex(hour => hour.time === currentTime) + 1
-    const next24Hours = next48Hours.slice(currentTimeIndex, currentTimeIndex + 24)
+    const next24Hours = next48Hours.slice(currentTimeIndex + 1, currentTimeIndex + 25)
 </script>
 
 <Card title="Next 24 hours" class="card {weather.isDay ? 'day' : 'night'} {$stickyHeader ? 'bg' : ''}">
