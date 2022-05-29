@@ -1,26 +1,31 @@
 <script>
     import WeatherIcon from "@components/weather/weather-icon.svelte";
+    import { getContext } from "svelte";
+
     export let weather
     export let location
     export let forecast
 
+    const sticky = getContext('isStickyHeader')
     const [todayWeather, tomorrowWeather, dayAfterTomorrowWeather] = forecast;
-    // console.log({ todayWeather, tomorrowWeather, dayAfterTomorrowWeather });
 </script>
 
-<div class="weather-header">
+<div class="weather-header" class:sticky={$sticky}>
     <h1 class="location-name">{location.name}</h1>
     <h3 class="condition">{weather.condition.text}</h3>
     <div class="temperature">
-        <h2 class="temperature-degree">{Math.floor(weather.tempC)}°</h2>
+        <div class="temperature-degree-container">
+            <h2 class="temperature-degree">{Math.floor(weather.tempC)}°</h2>
+            <h4 class="feels-like">
+                {Math.floor(todayWeather.day.maxtempC)} C° / {Math.floor(todayWeather.day.mintempC)} C°
+            </h4>
+        </div>
         <span class="weather-icon">
-            <WeatherIcon name={weather.condition.text} isDay={weather.isDay} />
+            <WeatherIcon name={weather.condition.text} isDay={weather.isDay} width={$sticky ? 75 : 150} />
         </span>
     </div>
-    <span>
-        {Math.floor(todayWeather.day.maxtempC)} C° / {Math.floor(todayWeather.day.mintempC)} C°
-        Feels like {Math.floor(weather.feelslikeC)} C°
-    </span>
+    <!-- {#if !$sticky} -->
+    <!-- {/if} -->
 </div>
 
 <style scoped>
@@ -35,6 +40,7 @@
 		padding: 16px 0 0 0;
         margin: auto;
         text-align: center;
+        transition: all ease .5s;
 	}
 
     
@@ -47,11 +53,19 @@
         margin: .5rem 0;
         width: 100%;
         text-align: center;
+        transition: all ease .5s;
 	}
 
     .temperature {
         display: flex;
         justify-content: space-between;
+    }
+
+    .temperature-degree-container {
+        display: flex;
+        flex-direction: column;
+        row-gap: 1rem;
+        transition: all ease .5s;
     }
 
     .temperature h2.temperature-degree {
@@ -61,5 +75,29 @@
         padding: 0;
         line-height: 100px;
         margin-top: 1.5rem;
+    }
+    .weather-header.sticky h1 {
+        font-size: 1rem
+    }
+
+    .weather-header.sticky h3.condition {
+        font-size: .7rem;
+        margin: .3rem 0;
+    }
+
+    .weather-header.sticky h1 {
+        font-size: 1rem
+    }
+
+    .weather-header.sticky .temperature-degree-container {
+        flex-direction: row;
+        column-gap: 1rem;
+        align-items: center;
+    }
+
+    .weather-header.sticky .temperature-degree {
+        font-size: 4rem;
+        line-height: 4rem;
+        margin: 0;
     }
 </style>

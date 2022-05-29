@@ -1,8 +1,10 @@
 <script>
     export let weatherName
+    export let isDay
+    export let solidBg
 </script>
 
-<div class="container {weatherName}">
+<div class="container {weatherName} {isDay ? 'day' : 'night'}" class:solidBg>
     <slot />
 </div>
 
@@ -12,6 +14,17 @@
     width: 100%;
     position: relative;
     overflow: hidden;
+    transition: background 1000ms linear
+}
+
+.container.solidBg.day {
+    color: #383838;
+	background: #ffffff;
+}
+
+.container.solidBg.night {
+    color: #d5d5d5;
+	background: #303030;
 }
 
 /* Background gradients here: https://codepen.io/akhil_001/pen/XNqQjw */

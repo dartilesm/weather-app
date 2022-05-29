@@ -2,7 +2,7 @@
     export let title
 </script>
 
-<div>
+<div class={$$props.class}>
     {#if title}
         <span class="title">{title}</span>
     {/if}

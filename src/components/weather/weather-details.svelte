@@ -8,15 +8,18 @@
     import UVIcon from '@assets/weather-icons/uv-index.svg?url';
     import WindIcon from '@assets/weather-icons/wind.svg?url';
     import BarometerIcon from '@assets/weather-icons/barometer.svg?url';
+    import { getContext } from 'svelte';
 
     export let forecast
     export let weather
+
+    const stickyHeader = getContext('isStickyHeader')
 
     const [todayForecastWeather] = forecast
 
 </script>
 
-<Card title="Details">
+<Card title="Details" class="card {weather.isDay ? 'day' : 'night'} {$stickyHeader ? 'bg' : ''}" >
     <div class="weather-container">
         <div class="weather-astro-icon">
             <img src={UVIcon} alt="uv" />
@@ -62,12 +65,19 @@
 </Card>
 
 <style scoped>
+:global(.card.day.bg) {
+    background: #f7f7f7;
+}
 
+:global(.card.night.bg) {
+    background: #f7f7f7;
+}
 .weather-container {
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
     row-gap: 3rem;
+    column-gap: 1rem;
 }
 
 .weather-container .weather-astro-icon {
