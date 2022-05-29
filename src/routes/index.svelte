@@ -75,9 +75,6 @@ import { writable } from 'svelte/store';
 			</section>
 			<section>
 				<WeatherNext_24Hours {forecast} {weather} />
-				<WeatherNext_24Hours {forecast} {weather} />
-				<WeatherNext_24Hours {forecast} {weather} />
-				<WeatherNext_24Hours {forecast} {weather} />
 			</section>
 		</div>
 	</div>
@@ -95,7 +92,7 @@ import { writable } from 'svelte/store';
 	}
 
 	.inner-container.solid-bg.day {
-		background-color: #f9f9f9;
+		background-color: #f7f7f7;
 	}
 	
 	.inner-container.solid-bg.night {
@@ -111,6 +108,7 @@ import { writable } from 'svelte/store';
 		transition: max-heght 0.5s ease;
 		width: calc(100% - 32px);
 		max-height: 260px;
+		background-color: inherit;
 	}
 
 	.inner-container.solid-bg .header-container {
@@ -119,9 +117,6 @@ import { writable } from 'svelte/store';
 		width: 100%;
 		padding: 16px 32px;
 		transition: max-heght 0.5s ease;
-	}
-	.inner-container.solid-bg.day .header-container {
-		background-color: #ffffff;
 	}
 
 	.content {
@@ -140,7 +135,7 @@ import { writable } from 'svelte/store';
 
 	.inner-container.night .content {
 		color: #d5d5d5;
-		background: #303030;
+		background: #242424;
 	}
 
 	.inner-container.solid-bg .content {
