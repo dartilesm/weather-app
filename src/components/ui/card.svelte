@@ -21,7 +21,6 @@
         width: 100%;
         height: auto;
         padding: 1rem;
-        background-color: rgba(0, 0, 0, .2);
         border-radius: 10px;
     }
 </style>
