@@ -13,8 +13,9 @@ export async function get() {
 
 	const location = {
 		ip: '190.195.10.159',
-		city: 'Auckland',
-		country: 'New Zeland'
+		longitude: -58.3845,
+		latitude: -34.6021
+
 	}
 
 	return {

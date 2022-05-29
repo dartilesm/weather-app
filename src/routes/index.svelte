@@ -1,10 +1,17 @@
 <script context="module">
 
-	export async function load({ fetch }) {
-		const locationResponse = await fetch('/api/get-location')
+	export async function load({ fetch, url }) {
+		const locationUrl = url.searchParams.get('location')
+		let locationData = {}
+		if (locationUrl) {
+			const [latitude, longitude] = locationUrl.split(',')
+			locationData = { latitude, longitude }
+		} else {
+			locationData = await fetch('/api/get-location')
 								.then(res => res.json())
+		}
 
-		const weatherResponse = await fetch(`/api/get-weather?q=${locationResponse.city} ${locationResponse.country}`)
+		const weatherResponse = await fetch(`/api/get-weather?q=${locationData.latitude} ${locationData.longitude}`)
 
 		const { location, current, forecast } = await weatherResponse.json()
 
@@ -21,11 +28,12 @@
 
 <script>
 	import { setContext } from 'svelte'
+	import { writable } from 'svelte/store';
+	import { PlusIcon } from 'svelte-feather-icons'
 	import WeatherHeader from '@components/weather/weather-header.svelte';
 	import WeatherDetails from '@components/weather/weather-details.svelte';
-	import WeatherBackground from '@components/ui/weather-background.svelte';
+	import WeatherBackground from '@components/weather/weather-background.svelte';
 	import WeatherNext_24Hours from '@components/weather/weather-next-24-hours.svelte';
-import { writable } from 'svelte/store';
 
 	export let weather
 	export let location
@@ -67,6 +75,11 @@ import { writable } from 'svelte/store';
 		on:scroll={handleScroll} 
 	>
 		<section class="header-container">
+			<nav>
+				<a href="/new-location">
+					<PlusIcon />
+				</a>
+			</nav>
 			<WeatherHeader {weather} {location} {forecast} />
 		</section>
 		<div class="content">
@@ -111,8 +124,24 @@ import { writable } from 'svelte/store';
 		background-color: inherit;
 	}
 
+	.header-container nav {
+		display: flex;
+		justify-content: flex-end;
+		padding-top: 1rem;
+		transition: all ease .5s;
+	}
+
+	.header-container nav a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.inner-container.solid-bg nav {
+		padding-top: .5rem;
+	}
+
 	.inner-container.solid-bg .header-container {
-		max-height: 171px;
+		max-height: 200px;
 		left: 0;
 		width: 100%;
 		padding: 16px 32px;
