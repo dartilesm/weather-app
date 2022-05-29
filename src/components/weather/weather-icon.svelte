@@ -5,15 +5,10 @@
 	export let width = 150
 
 	const iconName = getWeatherIconName({ name, isDay })
-	const componentPromise = import(`../../assets/weather-icons/${iconName}.svg?url`)
+	const iconPromise = import(`../../assets/weather-icons/${iconName}.svg`)
+								.then(({ default: icon }) => icon)
 </script>
 
-{#await componentPromise then component}
-	<img src={component.default} alt="iconName" {width} />
+{#await iconPromise then icon}
+	<img src={icon} alt="iconName" {width} />
 {/await}
-
-<style>
-	img {
-		height: auto;
-	}
-</style>

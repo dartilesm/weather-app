@@ -1,13 +1,15 @@
+import dynamicImportVars from '@rollup/plugin-dynamic-import-vars';
 import adapter from '@sveltejs/adapter-auto';
 import svg from '@poppanator/sveltekit-svg'
 import path from 'path'
 
 
 const svgOptions = {
+	type: 'url',
 	includePaths: ["./src/assets/weather-icons/"],
 	svgoOptions: {
 		multipass: true,
-        plugins: ["preset-default" ]
+        plugins: ["preset-default"]
 	}
 }
 
@@ -17,7 +19,10 @@ const config = {
 		adapter: adapter(),
 		vite: {
 			plugins: [
-				svg(svgOptions)
+				svg(svgOptions),
+				dynamicImportVars.default({
+					include: './src/components/weather/weather-icon.svelte'
+				})
 			],
 			resolve: {
 				alias: {

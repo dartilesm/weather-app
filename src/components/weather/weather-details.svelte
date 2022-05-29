@@ -1,13 +1,13 @@
 <script>
     import Card from '@components/ui/card.svelte';
-    import SunriseIcon from '@assets/weather-icons/sunrise.svg?url'
-    import SunsetIcon from '@assets/weather-icons/sunset.svg?url'
-    import MoonriseIcon from '@assets/weather-icons/moonrise.svg?url'
-    import MoonsetIcon from '@assets/weather-icons/moonset.svg?url'
-    import HumidityIcon from '@assets/weather-icons/raindrops.svg?url';
-    import UVIcon from '@assets/weather-icons/uv-index.svg?url';
-    import WindIcon from '@assets/weather-icons/wind.svg?url';
-    import BarometerIcon from '@assets/weather-icons/barometer.svg?url';
+    import SunriseIcon from '@assets/weather-icons/sunrise.svg'
+    import SunsetIcon from '@assets/weather-icons/sunset.svg'
+    import MoonriseIcon from '@assets/weather-icons/moonrise.svg'
+    import MoonsetIcon from '@assets/weather-icons/moonset.svg'
+    import HumidityIcon from '@assets/weather-icons/raindrops.svg';
+    import UVIcon from '@assets/weather-icons/uv-index.svg';
+    import WindIcon from '@assets/weather-icons/wind.svg';
+    import BarometerIcon from '@assets/weather-icons/barometer.svg';
     import { getContext } from 'svelte';
 
     export let forecast
