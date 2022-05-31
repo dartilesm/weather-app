@@ -11,7 +11,7 @@
 
     const next48Hours = [...todayWeather.hours, ...tomorrowWeather.hours]
     next48Hours.forEach(currentHour => {
-        currentHour.time = new Date(`${currentHour.time}`).toLocaleTimeString('en-US', { hour: 'numeric' })
+        currentHour.time12Hs = new Date(`${currentHour.time}`).toLocaleTimeString('en-US', { hour: 'numeric' })
     })
 
     const currentTime = new Date(`${weather.lastUpdated}`).toLocaleTimeString('en-US', { hour: 'numeric' })
@@ -23,7 +23,7 @@
     <div class="weather-container">
         {#each next24Hours as hour}
             <div class="weather-hour" class:day={hour.isDay}>
-                <span class="time">{hour.time}</span>
+                <span class="time">{hour.time12Hs}</span>
                 <span class="temperature">{Math.floor(hour.tempC)}°C</span>
                 <WeatherIcon name={hour.condition.text} isDay={hour.isDay} width={50} />
             </div>
