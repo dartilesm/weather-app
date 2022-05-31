@@ -1,4 +1,5 @@
 <script context="module">
+	import { weatherCities } from '@store/weather-store';
 
 	export async function load({ fetch, url }) {
 		const locationUrl = url.searchParams.get('location')
@@ -14,14 +15,16 @@
 		const weatherResponse = await fetch(`/api/get-weather?q=${locationData.latitude} ${locationData.longitude}`)
 
 		const { location, current, forecast } = await weatherResponse.json()
-
-		return {
-			status: weatherResponse.status,
-			props: {
+		weatherCities.update(_weatherCities => [
+			{
 				location,
-				weather: current, 
+				current,
 				forecast
-			}
+			},
+			..._weatherCities
+		])
+		return {
+			status: weatherResponse.status
 		}
 	}
 </script>
@@ -41,10 +44,6 @@
 	// Import Swiper styles
 	import 'swiper/css';
 
-	export let weather
-	export let location
-	export let forecast
-
 	const isStickyHeader = writable({ })
 	setContext('isStickyHeader', isStickyHeader)
 
@@ -53,7 +52,7 @@
 		$isStickyHeader[`header-${innerContainerEl.id}`] = innerContainerEl.scrollTop > 400
 	}
 
-	console.log({ weather, location, forecast })
+	console.log($weatherCities)
 	const weatherBgList = {
 		'Sunny': 'sunny',
 		'cloudy': 'cloudy',
@@ -68,30 +67,30 @@
 
 	const weatherBgNames = Object.keys(weatherBgList)
 
-	const weatherBgName = weatherBgNames.find(weatherName => weather.condition.text.includes(weatherName))
+	const weatherBgName = (weather) => {
+		const name = weatherBgNames.find(weatherName => weather.condition.text.includes(weatherName))
+		return weatherBgList[name] || ''
+	}
 
-	const weatherName = weatherBgList[weatherBgName] || ''
-
-	const virtualSlides = Array.from({ length: 3 }).map((el, index) => `Slide ${index + 1}`)
 </script>
 <Swiper
 	modules={[Virtual, Pagination]}
     slidesPerView={1}
 	autoHeight
 	pagination
-	class="swiper-container-weather {weather.isDay ? 'day' : 'night'}"
-	virtual={{ slides: virtualSlides }}
+	class="swiper-container-weather"
+	virtual={{ slides: $weatherCities }}
     let:virtualData={{ slides, offset, from }}
   >
-  {#each slides as slide, index (from + index)}
+  {#each slides as waetherCity, index (from + index)}
   	<SwiperSlide
 		style={`left: ${offset}px`}
 	  	virtualIndex={from + index}
 		let:data="{{ isActive }}"
 	  >
-		<WeatherBackground {weatherName} isDay={weather.isDay} solidBg={isActive && $isStickyHeader[`header-${index}`]}>
+		<WeatherBackground weatherName={weatherBgName(waetherCity.current)} isDay={waetherCity.current.isDay} solidBg={isActive && $isStickyHeader[`header-${index}`]}>
 			<section 
-				class="header-container {weather.isDay ? 'day' : 'night'}"
+				class="header-container {waetherCity.current.isDay ? 'day' : 'night'}"
 				class:solid-bg={isActive && $isStickyHeader[`header-${index}`]}	
 			>
 				<nav>
@@ -99,20 +98,20 @@
 						<PlusIcon />
 					</a>
 				</nav>
-				<WeatherHeader {weather} {location} {forecast} activeWeatherIndex={index}/>
+				<WeatherHeader weather={waetherCity.current} location={waetherCity.location} forecast={waetherCity.forecast} activeWeatherIndex={index}/>
 			</section>
 			<div 
-				class="inner-container {weather.isDay ? 'day' : 'night'}"  
+				class="inner-container {waetherCity.current.isDay ? 'day' : 'night'}"  
 				class:solid-bg={isActive && $isStickyHeader[`header-${index}`]}
 				id={index}
 				on:scroll={handleScroll} 
 			>
 				<div class="content">
 					<section>
-						<WeatherDetails {forecast} {weather} activeWeatherIndex={index}/>
+						<WeatherDetails forecast={waetherCity.forecast} weather={waetherCity.current} activeWeatherIndex={index}/>
 					</section>
 					<section>
-						<WeatherNext_24Hours {forecast} {weather} activeWeatherIndex={index}/>
+						<WeatherNext_24Hours forecast={waetherCity.forecast} weather={waetherCity.current} activeWeatherIndex={index}/>
 					</section>
 				</div>
 			</div>
@@ -129,11 +128,12 @@
 	:global(.swiper-pagination) {
 		top: 19px;
 		position: absolute;
-		width: 100%;
+		width: auto;
 		height: 20px;
 		z-index: 10;
+		left: 50%;
+		transform: translateX(-50%);
 		display: flex;
-		gap: 5px;
 		justify-content: center;
 		align-items: center;
 	}
@@ -182,13 +182,17 @@
 		z-index: 5;
 		margin: 0;
     	width: 100%;
-		padding: 16px;
+		padding: 48px 16px 16px 16px;
 		transition: max-heght 0.5s ease;
-		max-height: 260px;
+		max-height: 330px;
 		background-color: inherit;
 	}
 
 	.header-container nav {
+		position: absolute;
+		right: 20px;
+		top: 19px;
+		z-index: 15;
 		display: flex;
 		justify-content: flex-end;
 		transition: all ease .5s;
@@ -200,7 +204,7 @@
 	}
 
 	.header-container.solid-bg  {
-		max-height: 200px;
+		max-height: 190px;
 		left: 0;
 		width: 100%;
 		padding: 16px;
