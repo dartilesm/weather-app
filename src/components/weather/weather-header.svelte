@@ -44,7 +44,6 @@
 		font-weight: 500;
 		color: inherit;
 		text-transform: uppercase;
-		padding: 16px 0 0 0;
         margin: auto;
         text-align: center;
         transition: all ease .5s;

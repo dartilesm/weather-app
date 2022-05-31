@@ -14,7 +14,6 @@
     width: 100%;
     position: relative;
     overflow: hidden;
-    transition: background 1000ms linear
 }
 
 .container.solidBg.day {

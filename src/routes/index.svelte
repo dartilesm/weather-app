@@ -34,17 +34,22 @@
 	import WeatherDetails from '@components/weather/weather-details.svelte';
 	import WeatherBackground from '@components/weather/weather-background.svelte';
 	import WeatherNext_24Hours from '@components/weather/weather-next-24-hours.svelte';
+	// Import Swiper Svelte components
+	import { Swiper, SwiperSlide } from 'swiper/svelte';
+	import { Virtual, Pagination } from 'swiper'
+
+	// Import Swiper styles
+	import 'swiper/css';
 
 	export let weather
 	export let location
 	export let forecast
 
-	let innerContainerEl
-
 	const isStickyHeader = writable(false)
 	setContext('isStickyHeader', isStickyHeader)
 
-	function handleScroll () {
+	function handleScroll (event) {
+		const innerContainerEl = event.target
 		$isStickyHeader = innerContainerEl.scrollTop > 400
 	}
 
@@ -66,34 +71,91 @@
 	const weatherBgName = weatherBgNames.find(weatherName => weather.condition.text.includes(weatherName))
 
 	const weatherName = weatherBgList[weatherBgName] || ''
-</script>
 
-<WeatherBackground {weatherName} isDay={weather.isDay} solidBg={$isStickyHeader}>
-	<div 
-		class="inner-container {weather.isDay ? 'day' : 'night'} {$isStickyHeader ? 'solid-bg' : ''}" 
-		bind:this={innerContainerEl} 
-		on:scroll={handleScroll} 
-	>
-		<section class="header-container">
-			<nav>
-				<a href="/new-location">
-					<PlusIcon />
-				</a>
-			</nav>
-			<WeatherHeader {weather} {location} {forecast} />
-		</section>
-		<div class="content">
-			<section>
-				<WeatherDetails {forecast} {weather} />
+	const virtualSlides = Array.from({ length: 3 }).map((el, index) => `Slide ${index + 1}`)
+</script>
+<Swiper
+	modules={[Virtual, Pagination]}
+    slidesPerView={1}
+	autoHeight
+	pagination
+	class="swiper-container-weather {weather.isDay ? 'day' : 'night'} {$isStickyHeader ? 'solid-bg' : ''}"
+	virtual={{ slides: virtualSlides }}
+    let:virtualData={{ slides, offset, from }}
+  >
+  {#each slides as slide, index (from + index)}
+  	<SwiperSlide
+		style={`left: ${offset}px`}
+	  	virtualIndex={from + index}
+	  >
+		<WeatherBackground {weatherName} isDay={weather.isDay} solidBg={$isStickyHeader}>
+			<section 
+				class="header-container {weather.isDay ? 'day' : 'night'}"
+				class:solid-bg={$isStickyHeader}
+			>
+				<nav>
+					<a href="/new-location">
+						<PlusIcon />
+					</a>
+				</nav>
+				<WeatherHeader {weather} {location} {forecast} />
 			</section>
-			<section>
-				<WeatherNext_24Hours {forecast} {weather} />
-			</section>
-		</div>
-	</div>
-</WeatherBackground>
+			<div 
+				class="inner-container {weather.isDay ? 'day' : 'night'}"  
+				class:solid-bg={$isStickyHeader}
+				on:scroll={handleScroll} 
+			>
+				<div class="content">
+					<section>
+						<WeatherDetails {forecast} {weather} />
+					</section>
+					<section>
+						<WeatherNext_24Hours {forecast} {weather} />
+					</section>
+				</div>
+			</div>
+		</WeatherBackground>
+	</SwiperSlide>
+  {/each}
+</Swiper>
 
 <style>
+	:global(.swiper-autoheight, .swiper-autoheight .swiper-slide) {
+		height: 100vh;
+	}
+
+	:global(.swiper-pagination) {
+		top: 19px;
+		position: absolute;
+		width: 100%;
+		height: 20px;
+		z-index: 10;
+		display: flex;
+		gap: 5px;
+		justify-content: center;
+		align-items: center;
+	}
+
+	:global(.swiper-pagination .swiper-pagination-bullet) {
+		width: 10px;
+		height: 10px;
+		border-radius: 10px;
+		background: #fff;
+		opacity: 0.5;
+		margin: 0 5px;
+	}
+
+	:global(.swiper-pagination .swiper-pagination-bullet.swiper-pagination-bullet-active) {
+		opacity: 1;
+	}
+
+	:global(.swiper-container-weather.solid-bg.day .swiper-pagination .swiper-pagination-bullet) {
+		background: #383838;
+	}
+
+	:global(.swiper-container-weather.solid-bg.day .swiper-pagination .swiper-pagination-bullet) {
+		background: #383838;
+	}
 	.inner-container {
 		height: 100%;
 		width: 100%;
@@ -113,13 +175,13 @@
 	}
 
 	.header-container {
-		position: fixed;
+		position: absolute;
 		top: 0;
-		z-index: 2;
+		z-index: 5;
 		margin: 0;
     	width: 100%;
+		padding: 16px;
 		transition: max-heght 0.5s ease;
-		width: calc(100% - 32px);
 		max-height: 260px;
 		background-color: inherit;
 	}
@@ -127,7 +189,6 @@
 	.header-container nav {
 		display: flex;
 		justify-content: flex-end;
-		padding-top: 1rem;
 		transition: all ease .5s;
 	}
 
@@ -136,16 +197,20 @@
 		text-decoration: none;
 	}
 
-	.inner-container.solid-bg nav {
-		padding-top: .5rem;
-	}
-
-	.inner-container.solid-bg .header-container {
+	.header-container.solid-bg  {
 		max-height: 200px;
 		left: 0;
 		width: 100%;
-		padding: 16px 32px;
+		padding: 16px;
 		transition: max-heght 0.5s ease;
+	}
+
+	.header-container.solid-bg.day {
+		background-color: #f7f7f7;
+	}
+
+	.header-container.solid-bg.night {
+		background-color: #242424;
 	}
 
 	.content {
