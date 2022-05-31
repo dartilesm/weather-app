@@ -84,6 +84,14 @@
         line-height: 100px;
         margin-top: 1.5rem;
     }
+
+    .weather-header.sticky {
+        height: 130px;
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
     .weather-header.sticky h1 {
         font-size: 1rem
     }
