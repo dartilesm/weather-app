@@ -12,14 +12,15 @@
 
     export let forecast
     export let weather
+    export let activeWeatherIndex
 
-    const stickyHeader = getContext('isStickyHeader')
+    const sticky = getContext('isStickyHeader')
 
     const [todayForecastWeather] = forecast
 
 </script>
 
-<Card title="Details" class="card {weather.isDay ? 'day' : 'night'} {$stickyHeader ? 'bg' : ''}">
+<Card title="Details" class="card {weather.isDay ? 'day' : 'night'} {$sticky[`header-${activeWeatherIndex}`] ? 'bg' : ''}">
     <div class="weather-container">
         <div class="weather-astro-icon">
             <img src={UVIcon} alt="uv" />

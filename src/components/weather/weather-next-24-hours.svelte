@@ -5,8 +5,9 @@
 
     export let forecast
     export let weather
+    export let activeWeatherIndex
 
-    const stickyHeader = getContext('isStickyHeader')
+    const sticky = getContext('isStickyHeader')
     const [todayWeather, tomorrowWeather] = forecast
 
     const next48Hours = [...todayWeather.hours, ...tomorrowWeather.hours]
@@ -19,7 +20,7 @@
     const next24Hours = next48Hours.slice(currentTimeIndex + 1, currentTimeIndex + 25)
 </script>
 
-<Card title="Next 24 hours" class="card {weather.isDay ? 'day' : 'night'} {$stickyHeader ? 'bg' : ''}">
+<Card title="Next 24 hours" class="card {weather.isDay ? 'day' : 'night'} {$sticky[`header-${activeWeatherIndex}`] ? 'bg' : ''}">
     <div class="weather-container">
         {#each next24Hours as hour}
             <div class="weather-hour" class:day={hour.isDay}>

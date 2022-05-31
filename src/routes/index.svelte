@@ -45,12 +45,12 @@
 	export let location
 	export let forecast
 
-	const isStickyHeader = writable(false)
+	const isStickyHeader = writable({ })
 	setContext('isStickyHeader', isStickyHeader)
 
 	function handleScroll (event) {
 		const innerContainerEl = event.target
-		$isStickyHeader = innerContainerEl.scrollTop > 400
+		$isStickyHeader[`header-${innerContainerEl.id}`] = innerContainerEl.scrollTop > 400
 	}
 
 	console.log({ weather, location, forecast })
@@ -79,7 +79,7 @@
     slidesPerView={1}
 	autoHeight
 	pagination
-	class="swiper-container-weather {weather.isDay ? 'day' : 'night'} {$isStickyHeader ? 'solid-bg' : ''}"
+	class="swiper-container-weather {weather.isDay ? 'day' : 'night'}"
 	virtual={{ slides: virtualSlides }}
     let:virtualData={{ slides, offset, from }}
   >
@@ -87,30 +87,32 @@
   	<SwiperSlide
 		style={`left: ${offset}px`}
 	  	virtualIndex={from + index}
+		let:data="{{ isActive }}"
 	  >
-		<WeatherBackground {weatherName} isDay={weather.isDay} solidBg={$isStickyHeader}>
+		<WeatherBackground {weatherName} isDay={weather.isDay} solidBg={isActive && $isStickyHeader[`header-${index}`]}>
 			<section 
 				class="header-container {weather.isDay ? 'day' : 'night'}"
-				class:solid-bg={$isStickyHeader}
+				class:solid-bg={isActive && $isStickyHeader[`header-${index}`]}	
 			>
 				<nav>
 					<a href="/new-location">
 						<PlusIcon />
 					</a>
 				</nav>
-				<WeatherHeader {weather} {location} {forecast} />
+				<WeatherHeader {weather} {location} {forecast} activeWeatherIndex={index}/>
 			</section>
 			<div 
 				class="inner-container {weather.isDay ? 'day' : 'night'}"  
-				class:solid-bg={$isStickyHeader}
+				class:solid-bg={isActive && $isStickyHeader[`header-${index}`]}
+				id={index}
 				on:scroll={handleScroll} 
 			>
 				<div class="content">
 					<section>
-						<WeatherDetails {forecast} {weather} />
+						<WeatherDetails {forecast} {weather} activeWeatherIndex={index}/>
 					</section>
 					<section>
-						<WeatherNext_24Hours {forecast} {weather} />
+						<WeatherNext_24Hours {forecast} {weather} activeWeatherIndex={index}/>
 					</section>
 				</div>
 			</div>

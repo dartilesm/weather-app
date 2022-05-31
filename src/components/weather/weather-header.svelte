@@ -5,14 +5,16 @@
     export let weather
     export let location
     export let forecast
+    export let activeWeatherIndex
 
     const sticky = getContext('isStickyHeader')
+    
     const [todayWeather, tomorrowWeather, dayAfterTomorrowWeather] = forecast;
 
     const localTime = new Date(`${location.localtime}`).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' })
 </script>
 
-<div class="weather-header" class:sticky={$sticky}>
+<div class="weather-header" class:sticky={$sticky[`header-${activeWeatherIndex}`]}>
     <h1 class="location-name">{location.name}</h1>
     <h3 class="condition">{weather.condition.text}</h3>
     <div class="temperature">
@@ -28,7 +30,7 @@
             </div>
         </div>
         <span class="weather-icon">
-            <WeatherIcon name={weather.condition.text} isDay={weather.isDay} width={$sticky ? 75 : 150} />
+            <WeatherIcon name={weather.condition.text} isDay={weather.isDay} width={$sticky[`header-${activeWeatherIndex}`] ? 75 : 150} />
         </span>
     </div>
     <!-- {#if !$sticky} -->
