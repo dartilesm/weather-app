@@ -28,7 +28,8 @@ const config = {
 				alias: {
                     '@assets': path.resolve('./src/assets'),
                     '@components': path.resolve('./src/components'),
-                    '@utils': path.resolve('./src/utils')
+                    '@utils': path.resolve('./src/utils'),
+                    '@store': path.resolve('./src/store')
                 }
 			}
 		}
