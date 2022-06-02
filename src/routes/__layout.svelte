@@ -21,7 +21,7 @@
 	}
 
 	div {
-		width: 800px;
+		width: 500px;
 		height: 100vh;
 		max-width: 100vw;
 		display: block;
