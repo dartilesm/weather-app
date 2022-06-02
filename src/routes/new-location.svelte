@@ -8,7 +8,6 @@
         clearTimeout(typingTimeout)
         typingTimeout = setTimeout(async () => {
             cities = await fetch(`/api/get-city?q=${searchTerm}`).then(res => res.json())
-            console.log(cities)
         }, 1000)
     }
 </script>
