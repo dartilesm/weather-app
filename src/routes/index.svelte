@@ -43,6 +43,10 @@
 	setContext('isStickyHeader', isStickyHeader)
 
 </script>
+
+<svelte:head>
+	<title>Weather App</title>
+</svelte:head>
 <Swiper
 	modules={[Virtual, Pagination]}
     slidesPerView={1}
