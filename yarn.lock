@@ -89,18 +89,6 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
-"@splidejs/splide@^4.0.6":
-  version "4.0.6"
-  resolved "https://registry.yarnpkg.com/@splidejs/splide/-/splide-4.0.6.tgz#b3db9f0636f789c8a9d61d838a4bfbd692f2cbc1"
-  integrity sha512-JHJJX08qAe5N33p6TKBAs5hRkJHmmG+Kh9LPWkOQgcV07yG+YEiY26lXi/xbH6Rb0UUxbs3Y3Iz/1WYjmfGhjA==
-
-"@splidejs/svelte-splide@^0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@splidejs/svelte-splide/-/svelte-splide-0.2.4.tgz#6ccc4973ec2ea10fa1ccc01fc5cba09f8d8d8833"
-  integrity sha512-l0Ubr7NStH+hmX3DAPGjpI1PcokDO3DyHimDZrkyv9/62m/FUpTbbDz9KfitQw9ovpvwUY09OVvt9B6UC4W9QQ==
-  dependencies:
-    "@splidejs/splide" "^4.0.6"
-
 "@sveltejs/adapter-auto@next":
   version "1.0.0-next.43"
   resolved "https://registry.yarnpkg.com/@sveltejs/adapter-auto/-/adapter-auto-1.0.0-next.43.tgz#e01b63aedb48770b47fc171e51fc44a5cce9f37f"
@@ -263,6 +251,11 @@ chokidar@^3.5.3:
     readdirp "~3.6.0"
   optionalDependencies:
     fsevents "~2.3.2"
+
+cities.json@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/cities.json/-/cities.json-1.1.5.tgz#bd82fd19f67e8f7a9735b0e9c1c45d050c2bfe73"
+  integrity sha512-BKge3FmYfYOtN3tBaLfN9QvB7M5dDyjen3aFOn6XwgNASvLDhWTJazAtCvbpDWlpM6YWZXh4TUTsgxOn/n6MbA==
 
 color-convert@^2.0.1:
   version "2.0.1"
@@ -1171,11 +1164,6 @@ svelte-feather-icons@^4.0.0:
   integrity sha512-4ieUsjp+VYa1r6y80jDt9zRiRUZyJNbESpRdHdJJhiBubyuXX96A7f1UZSK4olxzP6Qsg5ZAuyZlnmvD+/swAA==
   dependencies:
     svelte "^3.38.2"
-
-svelte-fullpage@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/svelte-fullpage/-/svelte-fullpage-0.4.1.tgz#172404fd156585481d68e28c3c06de48b93268d1"
-  integrity sha512-BOpPD9ozMOf0iyGKjsM64B4z39FjIwZcb2pLCzjemo2qo6bLLgxy2NrUsfDLQkVLN34+eQBU8cDuT2+ha5nXnw==
 
 svelte-hmr@^0.14.11:
   version "0.14.11"

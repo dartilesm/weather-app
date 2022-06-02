@@ -1,14 +1,15 @@
 <script>
+    import citiesList from 'cities.json'
 
     let searchTerm
-    let typingTimeout
     let cities = []
 
-    function handleChange () {
-        clearTimeout(typingTimeout)
-        typingTimeout = setTimeout(async () => {
-            cities = await fetch(`/api/get-city?q=${searchTerm}`).then(res => res.json())
-        }, 1000)
+    function handleInput () {
+        cities = citiesList
+        .filter(city => {
+            return city.name.toLowerCase().startsWith(searchTerm.toLowerCase())
+        })
+        .slice(0, 20)
     }
 </script>
 
@@ -16,7 +17,7 @@
 <div class="container">
     <input 
         type="text" 
-        on:change={handleChange} 
+        on:input={handleInput} 
         bind:value={searchTerm} 
         placeholder="Search for a city..." 
         autocomplete="none"
@@ -25,7 +26,7 @@
     <ul>
         {#each cities as city}
             <li>
-                <a href="/?location={city.lat},{city.lon}">{city.name}, {city.region}, {city.country}</a>
+                <a href="/?location={city.lat},{city.lng}">{city.name}, {city.country}</a>
             </li>
         {/each}
     </ul>
@@ -42,8 +43,9 @@
     outline: none;
     border: 1px solid #ccc;
     border-radius: 8px;
-    padding: .8rem;
+    padding: 1rem;
     width: 100%;
+    font-size: 1rem;
 }
 
 ul {
@@ -53,7 +55,7 @@ ul {
 ul li {
     list-style: none;
     background-color: whitesmoke;
-    margin: 1rem 0;
+    margin: .5rem 0;
     border-radius: 8px;
 }
 
